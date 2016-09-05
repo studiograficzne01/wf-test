@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Students profiles</title>
+    <link rel="stylesheet" type="text/css" href="bower_components/bootstrap-css/css/bootstrap.css" media="screen" />
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+    <script type="text/javascript" src="https://code.angularjs.org/1.5.8/angular-route.min.js"></script>
+    <script type="text/javascript" src="bower_components/ng-file-model/ng-file-model.js"></script>
+    <script type="text/javascript" src="app.js"></script>
+</head>
+<body>
+    <div class="global-wrapper" ng-app="app">
+        <div class="container" style="margin-top: 10px;">
+            <div class="row panel panel-default" ng-controller="startCtrl">
+                <div class="panel-heading">
+                    <h2 class="panel-title">Students pofiles</h2>
+                </div>
+
+                <div class="col-xs-4 panel-body">
+                    <p>
+                        <a class="btn btn-primary" ng-href="#/add">Add new profile</a>
+                    </p>
+
+                    <ul class="list-group">
+                        <profile class="list-group-item" ng-repeat="profile in profiles | orderBy: 'name'"></profile>
+                    </ul>
+                </div>
+
+                <!--ng-view directive responds to changes defined in route configuration-->
+                <div class="col-xs-8" style="margin-top: 60px;" ng-view></div>
+            </div>
+        </div>
+
+        <script type="text/ng-template" id="no_selected.html">
+            <p>Select profile to display</p>
+        </script>
+
+        <script type="text/ng-template" id="profile_info.html">
+            <div class="list-group-item">
+                <p>name: {{profile.name}}</p>
+                <p>email address: {{profile.email}}</p>
+                <p>username: {{profile.username}}</p>
+                <p>password: {{profile.company.name}}</p>
+                <p>profile image: <img style="max-width: 300px;" ng-if="profile && profile.photo" src="{{(profile && profile.photo) ? profile.photo.data : null}}"/></p>
+
+                <a ng-href="#/edit/{{profiles.indexOf(profile)}}" class="btn btn-sm btn-primary">Edit</a>
+            </div>
+        </script>
+
+        <script type="text/ng-template" id="profile_form.html">
+            <div ng-controller="addProfileCtrl">
+                <div class="list-group-item">
+
+                    <div class="form-group">
+                        <p><label>name:</label> <input id="name" class="form-control" type="text" ng-model="profile.name"> </p>
+                        <p><label>e-mail address:</label> <input id="email" class="form-control" type="text" ng-model="profile.email"> </p>
+                        <p><label>username:</label> <input id="username" class="form-control" type="text" ng-model="profile.username"> </p>
+                        <p><label>password:</label> <input id="url" class="form-control" type="text" ng-model="profile.company.name"> </p>
+                        <p><label>image:</label><input type="file" id="image" ng-file-model="profile.photo"/></p>
+                        <img style="width:100px; height:100px;" ng-if="profile && profile.photo" src="{{(profile && profile.photo) ? profile.photo.data : null}}"/>
+                    </div>
+
+                    <a ng-if="path === '/add' " ng-href="#/profile/{{ profiles.length - 1 }}" class="btn btn-sm btn-primary" ng-click="createProfile()">Create</a>
+                    <a ng-if="path === '/edit'" ng-href="#/profile/{{index}}" class="btn btn-sm btn-primary">Back</a>
+                </div>
+            </div>
+        </script>
+
+        <script type="text/ng-template" id="profile.html">
+            <a ng-href="#/profile/{{profiles.indexOf(profile)}}">
+               <img style="width:20px; height: 20px;" ng-if="profile && profile.photo" src="{{(profile && profile.photo) ? profile.photo.data : null}}"/> {{profile.name}}
+            </a>
+        </script>
+    </div>
+</body>
+</html>
