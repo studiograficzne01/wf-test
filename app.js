@@ -28,7 +28,6 @@ var app = angular.module('app', ['ngRoute', 'ng-file-model'])
         $http.get("http://jsonplaceholder.typicode.com/users")
             .then(function(response) {
                 $scope.profiles = response.data;
-                console.dir($scope.profiles);
                 //after I have array ob profiles object I add to the profiles model also photos, that profiles hadn't assigned
                 $scope.assignPhotos();
             });
